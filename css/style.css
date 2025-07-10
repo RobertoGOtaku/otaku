@@ -984,15 +984,15 @@ footer {
 /* BOTÃO FECHAR - Canto superior direito bem definido */
 .image-popup-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
     background: rgba(0, 0, 0, 0.8);
     color: white;
     border: none;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
     z-index: 15;
@@ -1001,43 +1001,50 @@ footer {
     justify-content: center;
     transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     line-height: 1;
     /* MOBILE FIRST: Área de toque otimizada */
-    min-width: 44px;
-    min-height: 44px;
-    /* POSICIONAMENTO: Relativo à imagem, não à tela */
+    min-width: 40px;
+    min-height: 40px;
+    /* POSICIONAMENTO: Encostado no canto superior direito da imagem */
     transform: translate(50%, -50%);
+    /* VISUAL: Círculo fino e elegante */
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
 }
 
 /* HOVER DO BOTÃO FECHAR */
 .image-popup-close:hover {
     background: var(--primary);
     transform: translate(50%, -50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 45, 84, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 45, 84, 0.4);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* ESTADO ATIVO DO BOTÃO FECHAR */
 .image-popup-close:active {
     transform: translate(50%, -50%) scale(0.95);
+    box-shadow: 0 2px 8px rgba(255, 45, 84, 0.3);
 }
 
 /* RESPONSIVIDADE MOBILE PARA O POP-UP */
 @media (max-width: 768px) {
     .image-popup-close {
-        top: 8px;
-        right: 8px;
-        width: 42px;
-        height: 42px;
-        font-size: 1.7rem;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
         /* MOBILE: Área de toque ainda maior */
-        min-width: 48px;
-        min-height: 48px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+        min-width: 40px;
+        min-height: 40px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
+        border: 2px solid rgba(255, 255, 255, 0.3);
     }
     
     .image-popup-close:hover {
         transform: translate(50%, -50%) scale(1.05);
+        border-color: rgba(255, 255, 255, 0.5);
     }
     
     .image-popup-close:active {
@@ -1054,19 +1061,21 @@ footer {
 
 @media (max-width: 480px) {
     .image-popup-close {
-        top: 6px;
-        right: 6px;
+        top: 0;
+        right: 0;
         width: 40px;
         height: 40px;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         /* MOBILE PEQUENO: Área de toque otimizada */
-        min-width: 44px;
-        min-height: 44px;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+        min-width: 40px;
+        min-height: 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        border: 2px solid rgba(255, 255, 255, 0.4);
     }
     
     .image-popup-close:hover {
         transform: translate(50%, -50%) scale(1.03);
+        border-color: rgba(255, 255, 255, 0.6);
     }
     
     .image-popup-close:active {
