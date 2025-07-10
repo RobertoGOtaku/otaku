@@ -430,6 +430,12 @@ class OnePieceGallery {
         // CRIAÇÃO: Gera o grid de imagens
         this.createGalleryItems();
         
+        // INICIALIZAÇÃO: Pop-up de visualização de imagens
+        // IMPORTANTE: Deve ser inicializado APÓS criar as imagens
+        setTimeout(() => {
+            this.imagePopup = new ImagePopup();
+        }, 500);
+        
         // OTIMIZAÇÃO: Inicia carregamento das demais imagens em background
         this.startBackgroundPreload();
         
@@ -528,6 +534,169 @@ class OnePieceGallery {
 }
 
 /**
+ * SISTEMA DE POP-UP PARA VISUALIZAÇÃO DE IMAGENS
+ * 
+ * TEMPLATE REUTILIZÁVEL - Como adaptar para outros animes:
+ * 1. Copiar toda esta classe para o novo arquivo JS
+ * 2. Renomear a classe se necessário (ex: NarutoImagePopup, DragonBallImagePopup)
+ * 3. Verificar se os IDs dos elementos HTML estão corretos
+ * 4. Manter a mesma estrutura HTML do pop-up
+ * 5. Personalizar animações ou estilos se necessário
+ */
+class ImagePopup {
+    constructor() {
+        // ELEMENTOS DOM - Verificar se existem na página
+        this.imagePopup = document.getElementById('imagePopup');
+        this.closeImagePopup = document.getElementById('closeImagePopup');
+        this.popupImage = document.getElementById('popupImage');
+        
+        // VERIFICAÇÃO: Confirma se os elementos existem antes de inicializar
+        if (!this.imagePopup || !this.closeImagePopup || !this.popupImage) {
+            console.log('Elementos do pop-up de imagem não encontrados - não inicializando');
+            return;
+        }
+        
+        this.init();
+    }
+    
+    /**
+     * INICIALIZAÇÃO DO POP-UP DE IMAGEM
+     * Configura todos os event listeners necessários
+     */
+    init() {
+        console.log('Inicializando ImagePopup...');
+        
+        // CONFIGURAÇÃO: Event listeners para controles do pop-up
+        this.setupEventListeners();
+        
+        // CONFIGURAÇÃO: Event listeners para as imagens da gallery
+        this.setupImageClickListeners();
+        
+        console.log('ImagePopup inicializado com sucesso!');
+    }
+    
+    /**
+     * CONFIGURAÇÃO DOS EVENT LISTENERS DO POP-UP
+     * Gerencia abertura, fechamento e navegação
+     */
+    setupEventListeners() {
+        // FECHAR: Botão X do pop-up
+        this.closeImagePopup.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Botão fechar imagem clicado');
+            this.closePopup();
+        });
+        
+        // FECHAR: Clique no overlay (fundo escuro)
+        this.imagePopup.addEventListener('click', (e) => {
+            // IMPORTANTE: Só fecha se clicar no overlay, não na imagem
+            if (e.target === this.imagePopup) {
+                console.log('Clicou no overlay - fechando pop-up de imagem');
+                this.closePopup();
+            }
+        });
+        
+        // FECHAR: Tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.imagePopup.classList.contains('active')) {
+                console.log('ESC pressionado - fechando pop-up de imagem');
+                this.closePopup();
+            }
+        });
+        
+        // PREVENÇÃO: Impede que cliques na imagem fechem o pop-up
+        this.popupImage.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+    
+    /**
+     * CONFIGURAÇÃO DOS CLIQUES NAS IMAGENS DA GALLERY
+     * Adiciona event listener para todas as imagens da gallery
+     * IMPORTANTE: Este método deve ser chamado APÓS as imagens serem criadas
+     */
+    setupImageClickListeners() {
+        // DELAY: Aguarda as imagens serem criadas pela OnePieceGallery
+        setTimeout(() => {
+            const galleryImages = document.querySelectorAll('.onepiece-gallery-item img');
+            
+            console.log(`Configurando cliques para ${galleryImages.length} imagens`);
+            
+            // CONFIGURAÇÃO: Adiciona event listener para cada imagem
+            galleryImages.forEach((img, index) => {
+                img.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log(`Imagem ${index + 1} clicada - abrindo pop-up`);
+                    this.openPopup(img.src, img.alt);
+                });
+                
+                // ACESSIBILIDADE: Permite abrir com Enter/Space
+                img.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        console.log(`Imagem ${index + 1} ativada via teclado`);
+                        this.openPopup(img.src, img.alt);
+                    }
+                });
+                
+                // ACESSIBILIDADE: Torna as imagens focáveis
+                img.setAttribute('tabindex', '0');
+                img.style.cursor = 'pointer';
+            });
+        }, 1000); // Aguarda 1 segundo para as imagens serem criadas
+    }
+    
+    /**
+     * ABERTURA DO POP-UP
+     * @param {string} imageSrc - URL da imagem a ser exibida
+     * @param {string} imageAlt - Texto alternativo da imagem
+     */
+    openPopup(imageSrc, imageAlt) {
+        console.log('Abrindo pop-up de imagem:', imageSrc);
+        
+        // CONFIGURAÇÃO: Define a imagem no pop-up
+        this.popupImage.src = imageSrc;
+        this.popupImage.alt = imageAlt || 'Visualização da imagem';
+        
+        // EXIBIÇÃO: Mostra o pop-up com animação
+        this.imagePopup.classList.add('active');
+        
+        // BLOQUEIO: Impede scroll da página de fundo
+        document.body.style.overflow = 'hidden';
+        
+        // FOCO: Move foco para o botão fechar (acessibilidade)
+        setTimeout(() => {
+            this.closeImagePopup.focus();
+        }, 100);
+        
+        console.log('Pop-up de imagem aberto!');
+    }
+    
+    /**
+     * FECHAMENTO DO POP-UP
+     * Remove a imagem e oculta o pop-up
+     */
+    closePopup() {
+        console.log('Fechando pop-up de imagem...');
+        
+        // OCULTAÇÃO: Remove classe ativa com animação
+        this.imagePopup.classList.remove('active');
+        
+        // LIMPEZA: Remove a imagem após a animação
+        setTimeout(() => {
+            this.popupImage.src = '';
+            this.popupImage.alt = '';
+        }, 300);
+        
+        // RESTAURAÇÃO: Permite scroll da página novamente
+        document.body.style.overflow = '';
+        
+        console.log('Pop-up de imagem fechado!');
+    }
+}
+
+/**
  * INICIALIZAÇÃO AUTOMÁTICA
  * Detecta se estamos na página correta e inicializa a gallery
  * 
@@ -542,5 +711,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Página de gallery detectada - inicializando...');
         // INICIALIZAÇÃO: Cria nova instância da gallery
         const onePieceGallery = new OnePieceGallery();
+    } else {
+        // INICIALIZAÇÃO: Pop-up de imagem para páginas que já têm imagens estáticas
+        // PARA ADAPTAR: Usar em páginas que não usam a gallery dinâmica
+        const imagePopup = new ImagePopup();
     }
 });

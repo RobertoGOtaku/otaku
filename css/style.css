@@ -913,6 +913,138 @@ footer {
     transform: translateY(0) scale(1.02);
 }
 
+/* ===== POP-UP DE VISUALIZAÇÃO DE IMAGEM ===== */
+/* TEMPLATE REUTILIZÁVEL - Copiar para outras páginas de gallery */
+
+/* OVERLAY DO POP-UP - Fundo escuro que cobre toda a tela */
+.image-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Fundo bem escuro para destacar a imagem */
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000; /* Z-index alto para ficar acima de tudo */
+    backdrop-filter: blur(3px);
+    transition: all 0.3s ease;
+    padding: 0; /* SEM padding conforme solicitado */
+    margin: 0; /* SEM margin conforme solicitado */
+}
+
+/* ESTADO ATIVO DO OVERLAY - Quando o pop-up está aberto */
+.image-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* CONTAINER DA IMAGEM - Sem margins, paddings ou borders */
+.image-popup-content {
+    position: relative;
+    width: 100vw; /* Largura total da viewport */
+    height: 100vh; /* Altura total da viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* SEM padding conforme solicitado */
+    margin: 0; /* SEM margin conforme solicitado */
+    border: none; /* SEM border conforme solicitado */
+    background: transparent;
+}
+
+/* IMAGEM DO POP-UP - Proporção 1:1.4 (retrato) no maior tamanho possível */
+.image-popup-img {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    aspect-ratio: 1 / 1.4; /* Proporção retrato 1:1.4 conforme solicitado */
+    object-fit: contain; /* Mantém a proporção sem cortar a imagem */
+    object-position: center;
+    border: none; /* SEM border conforme solicitado */
+    margin: 0; /* SEM margin conforme solicitado */
+    padding: 0; /* SEM padding conforme solicitado */
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    user-select: none; /* Impede seleção da imagem */
+    -webkit-user-drag: none; /* Impede arrastar a imagem */
+}
+
+/* ANIMAÇÃO DE ENTRADA DA IMAGEM */
+.image-popup-overlay.active .image-popup-img {
+    transform: scale(1);
+}
+
+/* BOTÃO FECHAR - Canto superior direito bem definido */
+.image-popup-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    line-height: 1;
+}
+
+/* HOVER DO BOTÃO FECHAR */
+.image-popup-close:hover {
+    background: var(--primary);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 45, 84, 0.4);
+}
+
+/* ESTADO ATIVO DO BOTÃO FECHAR */
+.image-popup-close:active {
+    transform: scale(0.95);
+}
+
+/* RESPONSIVIDADE MOBILE PARA O POP-UP */
+@media (max-width: 768px) {
+    .image-popup-close {
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.8rem;
+    }
+    
+    /* AJUSTE DA IMAGEM PARA MOBILE - Mantém proporção 1:1.4 */
+    .image-popup-img {
+        max-width: 100vw;
+        max-height: 100vh;
+        aspect-ratio: 1 / 1.4; /* Força proporção retrato */
+    }
+}
+
+@media (max-width: 480px) {
+    .image-popup-close {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.6rem;
+    }
+}
+
 /* LOADING PARA IMAGENS */
 .onepiece-gallery-item img[data-src] {
     opacity: 0.7;
