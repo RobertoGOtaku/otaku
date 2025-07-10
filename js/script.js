@@ -578,12 +578,22 @@ class ImagePopup {
     /**
      * CONFIGURAÇÃO DOS EVENT LISTENERS DO POP-UP
      * Gerencia abertura, fechamento e navegação
+     * MOBILE FIRST: Otimizado para touch e gestos
      */
     setupEventListeners() {
         // FECHAR: Botão X do pop-up
         this.closeImagePopup.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             console.log('Botão fechar imagem clicado');
+            this.closePopup();
+        });
+        
+        // MOBILE: Touch events para melhor responsividade
+        this.closeImagePopup.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Botão fechar imagem tocado (touch)');
             this.closePopup();
         });
         
@@ -606,6 +616,11 @@ class ImagePopup {
         
         // PREVENÇÃO: Impede que cliques na imagem fechem o pop-up
         this.popupImage.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
+        // MOBILE: Impede que toques na imagem fechem o pop-up
+        this.popupImage.addEventListener('touchend', (e) => {
             e.stopPropagation();
         });
     }

@@ -984,47 +984,64 @@ footer {
 /* BOTÃO FECHAR - Canto superior direito bem definido */
 .image-popup-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     background: rgba(0, 0, 0, 0.8);
     color: white;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     cursor: pointer;
-    z-index: 10;
+    z-index: 15;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
     line-height: 1;
+    /* MOBILE FIRST: Área de toque otimizada */
+    min-width: 44px;
+    min-height: 44px;
+    /* POSICIONAMENTO: Relativo à imagem, não à tela */
+    transform: translate(50%, -50%);
 }
 
 /* HOVER DO BOTÃO FECHAR */
 .image-popup-close:hover {
     background: var(--primary);
-    transform: scale(1.1);
+    transform: translate(50%, -50%) scale(1.1);
     box-shadow: 0 6px 20px rgba(255, 45, 84, 0.4);
 }
 
 /* ESTADO ATIVO DO BOTÃO FECHAR */
 .image-popup-close:active {
-    transform: scale(0.95);
+    transform: translate(50%, -50%) scale(0.95);
 }
 
 /* RESPONSIVIDADE MOBILE PARA O POP-UP */
 @media (max-width: 768px) {
     .image-popup-close {
-        top: 15px;
-        right: 15px;
-        width: 45px;
-        height: 45px;
-        font-size: 1.8rem;
+        top: 8px;
+        right: 8px;
+        width: 42px;
+        height: 42px;
+        font-size: 1.7rem;
+        /* MOBILE: Área de toque ainda maior */
+        min-width: 48px;
+        min-height: 48px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+    }
+    
+    .image-popup-close:hover {
+        transform: translate(50%, -50%) scale(1.05);
+    }
+    
+    .image-popup-close:active {
+        transform: translate(50%, -50%) scale(0.98);
     }
     
     /* AJUSTE DA IMAGEM PARA MOBILE - Mantém proporção 1:1.4 */
@@ -1037,11 +1054,23 @@ footer {
 
 @media (max-width: 480px) {
     .image-popup-close {
-        top: 10px;
-        right: 10px;
+        top: 6px;
+        right: 6px;
         width: 40px;
         height: 40px;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+        /* MOBILE PEQUENO: Área de toque otimizada */
+        min-width: 44px;
+        min-height: 44px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+    }
+    
+    .image-popup-close:hover {
+        transform: translate(50%, -50%) scale(1.03);
+    }
+    
+    .image-popup-close:active {
+        transform: translate(50%, -50%) scale(0.97);
     }
 }
 
